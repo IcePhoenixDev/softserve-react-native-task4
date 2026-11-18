@@ -69,6 +69,10 @@ export default function CharactersScreen() {
       )}
       keyExtractor={item => String(item.id)}
       contentContainerStyle={styles.listContent}
+      ItemSeparatorComponent={() => (
+        <View style={ styles.separator } />
+      )}
+      ListEmptyComponent={ <Text style={styles.placeholder} > no se encuentra el personaje </Text> }
     />
     )}
       {/* TODO Paso 5: sustituye este texto por tu FlatList. */}
