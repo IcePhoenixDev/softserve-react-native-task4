@@ -2,7 +2,8 @@ import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-nativ
 import { COLORS } from '../config/constants';
 import { useEffect, useState } from 'react';
 import { getCharacters }  from '../services/charactersService';
-import CharacterCard from '../components/CharacterCard'
+import CharacterCard from '../components/CharacterCard';
+import StateMessage from '../components/StateMessage';
 
 // ✍️ LO PROGRAMAS TÚ (Pasos 3 al 10)
 //
@@ -21,7 +22,10 @@ export default function CharactersScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   // TODO Paso 4: primera carga de datos con useEffect.
-  useEffect (() =>{ async function cargando() {
+
+  // TODO Paso 6: estados de carga / error y reintento.
+  async function cargarPersonajes() {
+      
     try {
         setError(null);
         setLoading(true);
@@ -35,9 +39,9 @@ export default function CharactersScreen() {
       setLoading(false);
     }
    
-  }cargando();
+  }useEffect(() => {
+  cargarPersonajes();
   }, []);
-  // TODO Paso 6: estados de carga / error y reintento.
   // TODO Paso 8: paginación (estado extra + función para cargar más).
   // TODO Paso 9: pull to refresh.
   // TODO Paso 10: búsqueda con debounce.
@@ -45,18 +49,30 @@ export default function CharactersScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rick and Morty</Text>
-
-      {/* TODO Paso 10: aquí va el campo de búsqueda. */}
-
-      {/* TODO Paso 5: sustituye este texto por tu FlatList. */}
-      <FlatList
-      data = {characters}
-      renderItem={({item}) => (
-        <CharacterCard character={item}/>
+      {loading ? (
+    <ActivityIndicator
+      size="large"
+      color={COLORS.primary}
+      style={styles.loader}
+    />
+    ) : error ? (
+    <StateMessage
+      message={error}
+      actionLabel="Reintentar"
+      onAction={cargarPersonajes}
+    />
+      ) : (
+    <FlatList
+      data={characters}
+      renderItem={({ item }) => (
+        <CharacterCard character={item} />
       )}
-      keyExtractor={item => String(item.id) }
-      contentContainerStyle = { styles.listContent }
-      />
+      keyExtractor={item => String(item.id)}
+      contentContainerStyle={styles.listContent}
+    />
+    )}
+      {/* TODO Paso 5: sustituye este texto por tu FlatList. */}
+      {/* TODO Paso 10: aquí va el campo de búsqueda. */}
     </View>
   );
 }

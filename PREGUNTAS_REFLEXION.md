@@ -60,7 +60,7 @@ name, status, species, image
 
 **¿Por qué es mejor mostrar un mensaje con un botón "Reintentar" que dejar la pantalla vacía?**
 
-> 
+> Para evitar dejar la pantalla vacía o mostrar mensajes genéricos de pérdida de conexión. Además, permite mostrar un mensaje más amigable al usuario y darle la posibilidad de volver a cargar el contenido sin tener que cerrar y abrir nuevamente la aplicación.
 
 ## Paso 8 · Paginación
 
