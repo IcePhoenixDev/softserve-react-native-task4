@@ -21,8 +21,11 @@ export default function CharactersScreen() {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   // TODO Paso 4: primera carga de datos con useEffect.
-
   // TODO Paso 6: estados de carga / error y reintento.
   async function cargarPersonajes() {
       
@@ -31,6 +34,7 @@ export default function CharactersScreen() {
         setLoading(true);
         const datos = await getCharacters();
         setCharacters(datos.results);
+        setHasNextPage(datos.hasNextPage);
     }
     catch(e) {
       setError(e.message)
@@ -43,6 +47,27 @@ export default function CharactersScreen() {
   cargarPersonajes();
   }, []);
   // TODO Paso 8: paginación (estado extra + función para cargar más).
+  async function cargarMasPersonajes(){
+    if(loadingMore || !hasNextPage) return;
+
+    try{
+      setError(null);
+      setLoadingMore(true)
+      const siguientePagina = page + 1;
+      const datos2 = await getCharacters({page: siguientePagina});
+      setCharacters((anteriores) =>         
+        [...anteriores, ...datos2.results]
+       );
+      setPage(siguientePagina);
+      setHasNextPage(datos2.hasNextPage);
+    }
+    catch(e){
+      setError(e.message)
+    }
+    finally{
+      setLoadingMore(false)
+    }
+  };
   // TODO Paso 9: pull to refresh.
   // TODO Paso 10: búsqueda con debounce.
 
@@ -73,6 +98,8 @@ export default function CharactersScreen() {
         <View style={ styles.separator } />
       )}
       ListEmptyComponent={ <Text style={styles.placeholder} > no se encuentra el personaje </Text> }
+      onEndReached={cargarMasPersonajes}
+      onEndReachedThreshold={0.5}
     />
     )}
       {/* TODO Paso 5: sustituye este texto por tu FlatList. */}
