@@ -72,7 +72,7 @@ name, status, species, image
 
 **¿Por qué usé un estado distinto (`refreshing`) y no el mismo de la carga inicial?**
 
-> 
+> Se utiliza refreshing porque la actualización manual es distinta de la carga inicial; con refreshing puedo mostrar el indicador sin ocultar la lista de personajes que ya está cargada.
 
 ## Paso 10 · Búsqueda
 

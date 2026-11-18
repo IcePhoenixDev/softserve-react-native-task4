@@ -69,6 +69,23 @@ export default function CharactersScreen() {
     }
   };
   // TODO Paso 9: pull to refresh.
+  async function actualizarPersonajes() {
+    setRefreshing(true)
+
+    try{
+      setError(null);
+      const datos3 = await getCharacters({page: 1});
+      setPage(1);
+      setCharacters(datos3.results);
+      setHasNextPage(datos3.hasNextPage);
+    }
+    catch(e){
+      setError(e.message)
+    }
+    finally{
+      setRefreshing(false)
+    }
+  }
   // TODO Paso 10: búsqueda con debounce.
 
   return (
@@ -100,6 +117,8 @@ export default function CharactersScreen() {
       ListEmptyComponent={ <Text style={styles.placeholder} > no se encuentra el personaje </Text> }
       onEndReached={cargarMasPersonajes}
       onEndReachedThreshold={0.5}
+      refreshing={refreshing}
+      onRefresh={actualizarPersonajes}
     />
     )}
       {/* TODO Paso 5: sustituye este texto por tu FlatList. */}
