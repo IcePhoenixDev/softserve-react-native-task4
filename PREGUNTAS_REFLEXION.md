@@ -78,15 +78,15 @@ name, status, species, image
 
 1. **¿Qué es el debounce y qué problema resuelve?**
 
-> 
+> retrasa la ejecución de una acción hasta que deje de repetirse durante un intervalo de tiempo determinado
 
 2. **¿Para qué sirve la función de limpieza (cleanup) que se devuelve en un `useEffect`? Da un ejemplo de esta práctica.**
 
-> 
+> sirve para deshacer o cancelar lo que el efecto inició(useEffect), clearTimeout(tiempoEspera) cancela el temporizador anterior cuando cambia el texto de búsqueda
 
 3. **Si el usuario escribe rápido y las respuestas llegan en desorden, ¿qué podría salir mal?**
 
-> 
+> en el caso de una búsqueda vieja puede tardar más que la nueva en responder. Si guardas cada respuesta al llegar, los antigus resultados podrían reemplazar la búsqueda más reciente
 
 ## Cierre
 

@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TextInput } from 'react-native';
 import { COLORS } from '../config/constants';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getCharacters }  from '../services/charactersService';
 import CharacterCard from '../components/CharacterCard';
 import StateMessage from '../components/StateMessage';
@@ -25,15 +25,18 @@ export default function CharactersScreen() {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchText, setSearchText] = useState('')
+  const bloqueandoCarga = useRef(false);
   // TODO Paso 4: primera carga de datos con useEffect.
   // TODO Paso 6: estados de carga / error y reintento.
-  async function cargarPersonajes() {
+  async function cargarPersonajes(name = searchText) {
       
     try {
         setError(null);
         setLoading(true);
-        const datos = await getCharacters();
+        const datos = await getCharacters({page: 1, name});
         setCharacters(datos.results);
+        setPage(1);
         setHasNextPage(datos.hasNextPage);
     }
     catch(e) {
@@ -44,17 +47,22 @@ export default function CharactersScreen() {
     }
    
   }useEffect(() => {
-  cargarPersonajes();
-  }, []);
+    const tiempoEspera = setTimeout(() => {
+      cargarPersonajes(searchText);
+    }, 500);
+  return () => clearTimeout(tiempoEspera);
+  }, [searchText]);
   // TODO Paso 8: paginación (estado extra + función para cargar más).
   async function cargarMasPersonajes(){
-    if(loadingMore || !hasNextPage) return;
+    if (bloqueandoCarga.current || !hasNextPage) return;
+
+    bloqueandoCarga.current = true;
 
     try{
       setError(null);
       setLoadingMore(true)
       const siguientePagina = page + 1;
-      const datos2 = await getCharacters({page: siguientePagina});
+      const datos2 = await getCharacters({page: siguientePagina, name: searchText});
       setCharacters((anteriores) =>         
         [...anteriores, ...datos2.results]
        );
@@ -66,6 +74,7 @@ export default function CharactersScreen() {
     }
     finally{
       setLoadingMore(false)
+      bloqueandoCarga.current = false;
     }
   };
   // TODO Paso 9: pull to refresh.
@@ -74,7 +83,7 @@ export default function CharactersScreen() {
 
     try{
       setError(null);
-      const datos3 = await getCharacters({page: 1});
+      const datos3 = await getCharacters({page: 1, name: searchText});
       setPage(1);
       setCharacters(datos3.results);
       setHasNextPage(datos3.hasNextPage);
@@ -91,6 +100,10 @@ export default function CharactersScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rick and Morty</Text>
+      <TextInput placeholder='Buscar personaje...' 
+      style= {styles.input}
+      value={searchText} 
+      onChangeText={setSearchText} />
       {loading ? (
     <ActivityIndicator
       size="large"
@@ -104,6 +117,7 @@ export default function CharactersScreen() {
       onAction={cargarPersonajes}
     />
       ) : (
+    
     <FlatList
       data={characters}
       renderItem={({ item }) => (
@@ -123,6 +137,7 @@ export default function CharactersScreen() {
     )}
       {/* TODO Paso 5: sustituye este texto por tu FlatList. */}
       {/* TODO Paso 10: aquí va el campo de búsqueda. */}
+
     </View>
   );
 }
