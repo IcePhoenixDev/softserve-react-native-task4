@@ -36,15 +36,15 @@ name, status, species, image
 
 1. **¿Qué pasa si omito por completo el arreglo de dependencias?**
 
-> 
+> UseEffect se ejecuta cada vez que el componente se vuelva a renderizar
 
 2. **¿Qué significa dejar el arreglo vacío?**
 
-> 
+> que no tenemos dependencias que vigilar y el efecto se ejecutará cuando el componente se muestre
 
 3. **¿Por qué la función que recibe `useEffect` no debe ser `async` directamente?**
 
-> 
+> async devuelve una promesa y useEffect espera una función de limpieza o nada
 
 ## Paso 5 · FlatList
 
