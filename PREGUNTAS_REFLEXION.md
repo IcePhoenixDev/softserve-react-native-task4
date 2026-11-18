@@ -50,11 +50,11 @@ name, status, species, image
 
 1. **¿Para qué sirve la prop que extrae la llave de cada elemento?**
 
-> 
+> Sirve para identificar de forma única cada elemento de la lista y así React puede reconocerlos cuando se actualizan.
 
 2. **¿Por qué usar `FlatList` en lugar de un `ScrollView` con `.map()`?**
 
-> 
+> FlatList puede mostrar de forma eficiente múltiples elementos en pantalla, ya que renderiza los elementos según se necesitan.
 
 ## Paso 6 · Carga y error
 

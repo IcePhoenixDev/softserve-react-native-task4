@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { COLORS } from '../config/constants';
 import { useEffect, useState } from 'react';
-import { getCharacters } from '../services/charactersService';
+import { getCharacters }  from '../services/charactersService';
+import CharacterCard from '../components/CharacterCard'
 
 // ✍️ LO PROGRAMAS TÚ (Pasos 3 al 10)
 //
@@ -48,7 +49,14 @@ export default function CharactersScreen() {
       {/* TODO Paso 10: aquí va el campo de búsqueda. */}
 
       {/* TODO Paso 5: sustituye este texto por tu FlatList. */}
-      <Text style={styles.placeholder}>Aquí aparecerá la lista de personajes.</Text>
+      <FlatList
+      data = {characters}
+      renderItem={({item}) => (
+        <CharacterCard character={item}/>
+      )}
+      keyExtractor={item => String(item.id) }
+      contentContainerStyle = { styles.listContent }
+      />
     </View>
   );
 }
