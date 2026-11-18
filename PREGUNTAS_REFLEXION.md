@@ -24,13 +24,13 @@ name, status, species, image
 
 **¿Qué diferencia hay entre que `fetch` "falle" y que el servidor responda con un error? ¿Qué debo revisar en la respuesta?**
 
-> 
+> Fetch puede fallar cuando no logra completar la solicitud, ya sea por problemas de conexión o DNS. Mientras que un error del servidor nos puede devolver un código HTTP como 404 o 500.
 
 ## Paso 3 · Estado
 
 **¿Por qué guardo los personajes en estado y no en una variable normal?**
 
-> 
+> Se guardan en un estado porque los personajes pueden cambiar mientras usamos la aplicación. Cuando el estado cambia, React actualiza la pantalla para mostrar los nuevos datos. En cambio, una variable normal no provoca esa actualización.
 
 ## Paso 4 · useEffect
 
